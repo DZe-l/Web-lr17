@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Лабораторная работа №17 — Обработчики событий</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #f9f9f9;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .block {
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px auto;
+      width: 400px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+    .block h3 {
+      margin-bottom: 10px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+    }
+    button {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 6px;
+      background-color: #87CEFA;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background-color: #5caef5;
+    }
+    img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    /* Калькулятор */
+    .calc {
+      width: 250px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .calc input {
+      width: 100%;
+      height: 45px;
+      font-size: 22px;
+      text-align: right;
+      border-radius: 8px;
+      border: 1px solid #aaa;
+      padding-right: 10px;
+      margin-bottom: 10px;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .buttons button {
+      height: 45px;
+      font-size: 18px;
+      border-radius: 8px;
+    }
+    .equal {
+      background-color: #32CD32;
+      color: white;
+    }
+    .clear {
+      background-color: #FF7F7F;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Лабораторная работа №17</h1>
+  <h2>Назначение обработчиков событий в JavaScript</h2>
+
+  <!-- Задание 1 -->
+  <div class="block">
+    <h3>Задание 1. Алерт с содержимым текстового поля</h3>
+    <input type="text" id="textInput" placeholder="Введите текст...">
+    <button id="showAlert">Показать содержимое</button>
+  </div>
+
+  <!-- Задание 2 -->
+  <div class="block">
+    <h3>Задание 2. Смена картинки</h3>
+    <img id="image" src="https://via.placeholder.com/400x250/87CEFA/000000?text=Первая+картинка" alt="Картинка">
+    <button id="changeImage">Сменить картинку</button>
+  </div>
+
+  <!-- Задание 3 -->
+  <div class="block">
+    <h3>Задание 3. Счётчик кликов</h3>
+    <button id="counterBtn">0</button>
+  </div>
+
+  <!-- Задание 4 -->
+  <div class="block">
+    <h3>Задание 4. Калькулятор</h3>
+    <div class="calc">
+      <input type="text" id="display" readonly>
+      <div class="buttons">
+        <button class="num">7</button>
+        <button class="num">8</button>
+        <button class="num">9</button>
+        <button class="op">/</button>
+
+        <button class="num">4</button>
+        <button class="num">5</button>
+        <button class="num">6</button>
+        <button class="op">*</button>
+
+        <button class="num">1</button>
+        <button class="num">2</button>
+        <button class="num">3</button>
+        <button class="op">-</button>
+
+        <button class="clear">C</button>
+        <button class="num">0</button>
+        <button class="equal">=</button>
+        <button class="op">+</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Задание 1 =====
+    document.getElementById("showAlert").addEventListener("click", function() {
+      const value = document.getElementById("textInput").value;
+      alert("Вы ввели: " + value);
+    });
+
+    // ===== Задание 2 =====
+    const img = document.getElementById("image");
+    const btnChange = document.getElementById("changeImage");
+    let toggled = false;
+    btnChange.addEventListener("click", function() {
+      if (!toggled) {
+        img.src = "https://biopet.az/resized/fit1220x550/center/pages/770/fars-pisiyi-1198x540px.jpg";
+      } else {
+        img.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKZPdpnaUtxhXKJ8eFnYn3YXEaaRzZat0ijw&s";
+      }
+      toggled = !toggled;
+    });
+
+    // ===== Задание 3 =====
+    const counterBtn = document.getElementById("counterBtn");
+    let count = 0;
+    counterBtn.addEventListener("click", function() {
+      count++;
+      counterBtn.textContent = count;
+    });
+
+    // ===== Задание 4 (Калькулятор) =====
+    const display = document.getElementById('display');
+    const buttons = document.querySelectorAll('.buttons button');
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.classList.contains('num') || btn.classList.contains('op')) {
+          display.value += btn.textContent;
+        } else if (btn.classList.contains('equal')) {
+          try {
+            display.value = eval(display.value);
+          } catch {
+            display.value = 'Ошибка';
+          }
+        } else if (btn.classList.contains('clear')) {
+          display.value = '';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
